@@ -1,0 +1,36 @@
+#!/bin/bash 
+
+sudo apt update; sudo apt upgrade -y 
+sudo apt install -y gh cmake gettext unzip cmake build-essential python3-neovim jq wget curl apt-file python3-dev python3-pip
+
+gh auth login
+wget https://raw.githubusercontent.com/winslowb/dotfiles/main/dot_bashrc?token=GHSAT0AAAAAAB7IPHEGHIXGKXGYD6W
+mv dot_bashrc* $HOME/.bashrc
+echo 'cd $HOME' >> $HOME/.bash_profile
+source $HOME/.bashrc
+
+mkdir $HOME/projects
+mkdir -p $HOME/.local/bin
+
+cd $HOME/projects
+git clone https://github.com/neovim/neovim.git
+make CMAKE_BUILD_TYPE=Release
+sudo make install
+
+wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+nvm install 18.14.2
+
+npm install -g @bitwarden/cli
+
+NPM_CONFIG_PREFIX=~/.joplin-bin npm install -g joplin
+ln -s ~/.joplin-bin/bin/joplin $HOME/.local/bin
+
+
+sh -c "$(curl -fsLS get.chezmoi.io)"
+chezmoi init https://github.com/$GITHUB_USERNAME/dotfiles.git
+
+export TERMINAL=tilix
+bash -c "$(wget -qO- https://git.io/vQgMr)"
+
