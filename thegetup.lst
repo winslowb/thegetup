@@ -3,7 +3,10 @@
 sudo apt update; sudo apt upgrade -y 
 sudo apt install -y gh cmake gettext unzip cmake build-essential python3-neovim jq wget curl apt-file python3-dev python3-pip
 
+git config --global user.name "regular bill"
+git config --global user.email "regularbill@bill.com"
 gh auth login
+
 wget https://raw.githubusercontent.com/winslowb/dotfiles/main/dot_bashrc?token=GHSAT0AAAAAAB7IPHEGHIXGKXGYD6W
 mv dot_bashrc* $HOME/.bashrc
 echo 'cd $HOME' >> $HOME/.bash_profile
@@ -30,6 +33,7 @@ ln -s ~/.joplin-bin/bin/joplin $HOME/.local/bin
 
 sh -c "$(curl -fsLS get.chezmoi.io)"
 chezmoi init https://github.com/$GITHUB_USERNAME/dotfiles.git
+chezmoi apply -v
 
 export TERMINAL=tilix
 bash -c "$(wget -qO- https://git.io/vQgMr)"
