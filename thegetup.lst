@@ -7,8 +7,6 @@ git config --global user.name "regular bill"
 git config --global user.email "regularbill@bill.com"
 gh auth login
 
-wget https://raw.githubusercontent.com/winslowb/dotfiles/main/dot_bashrc?token=GHSAT0AAAAAAB7IPHEGHIXGKXGYD6W
-mv dot_bashrc* $HOME/.bashrc
 echo 'cd $HOME' >> $HOME/.bash_profile
 source $HOME/.bashrc
 
@@ -17,6 +15,7 @@ mkdir -p $HOME/.local/bin
 
 cd $HOME/projects
 git clone https://github.com/neovim/neovim.git
+cd $HOME/projects/neovim
 make CMAKE_BUILD_TYPE=Release
 sudo make install
 
@@ -26,14 +25,18 @@ export NVM_DIR="$HOME/.nvm"
 nvm install 18.14.2
 
 npm install -g @bitwarden/cli
+bw login
 
 NPM_CONFIG_PREFIX=~/.joplin-bin npm install -g joplin
 ln -s ~/.joplin-bin/bin/joplin $HOME/.local/bin
 
+wget https://github.com/ankitpokhrel/jira-cli/releases/download/v1.3.0/jira_1.3.0_linux_arm64.tar.gz
+tar -xzvf jira_1.3.0_linux_arm64.tar.gz  
 
 sh -c "$(curl -fsLS get.chezmoi.io)"
-chezmoi init https://github.com/$GITHUB_USERNAME/dotfiles.git
-chezmoi apply -v
+cp $HOME/projects/bin/chezmoi $HOME/.local/bin/dot
+dot init https://github.com/$GITHUB_USERNAME/dotfiles.git
+dot update -v
 
 export TERMINAL=tilix
 bash -c "$(wget -qO- https://git.io/vQgMr)"
