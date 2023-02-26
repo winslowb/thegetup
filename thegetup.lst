@@ -27,7 +27,7 @@ cd $HOME/projects
 sh -c "$(curl -fsLS get.chezmoi.io)"
 cp $HOME/projects/bin/chezmoi $HOME/.local/bin/dot
 export PATH=$PATH:$HOME/.local/bin
-$HOME/.local/bin/dot init https://github.com/$GITHUB_USERNAME/dotfiles.git
+$HOME/.local/bin/dot init https://github.com/winslowb/dotfiles.git
 $HOME/.local/bin/dot update -v
 source $HOME/.bashrc
 
