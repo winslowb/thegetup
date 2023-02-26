@@ -19,6 +19,7 @@ git clone https://github.com/neovim/neovim.git
 cd $HOME/projects/neovim
 make CMAKE_BUILD_TYPE=Release
 sudo make install
+cp $HOME//projects/neovim/build/bin/nvim $HOME/.local/bin
 
 wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
 export NVM_DIR="$HOME/.nvm"
@@ -34,6 +35,7 @@ ln -s ~/.joplin-bin/bin/joplin $HOME/.local/bin
 wget https://github.com/ankitpokhrel/jira-cli/releases/download/v1.3.0/jira_1.3.0_linux_arm64.tar.gz
 tar -xzvf jira_1.3.0_linux_arm64.tar.gz  
 
+cd $HOME/projects
 sh -c "$(curl -fsLS get.chezmoi.io)"
 cp $HOME/projects/bin/chezmoi $HOME/.local/bin/dot
 dot init https://github.com/$GITHUB_USERNAME/dotfiles.git
