@@ -25,10 +25,11 @@ ln -s ~/.joplin-bin/bin/joplin $HOME/.local/bin
 
 cd $HOME/projects
 sh -c "$(curl -fsLS get.chezmoi.io)"
-cp $HOME/projects/bin/chezmoi $HOME/.local/bin/dot
+sudo cp $HOME/projects/bin/chezmoi /usr/bin/
+alias dot=/usr/bin/chezmoi
 export PATH=$PATH:$HOME/.local/bin
-$HOME/.local/bin/dot init https://github.com/winslowb/dotfiles.git
-$HOME/.local/bin/dot update -v
+/usr/bin/chezmoi init https://github.com/winslowb/dotfiles.git
+/usr/bin/chezmoi update -v
 source $HOME/.bashrc
 
 echo 'cd $HOME' >> $HOME/.bash_profile
