@@ -1,0 +1,38 @@
+  768  sudo apt install xinput
+  804  sudo apt install solaar
+  920  sudo apt install ./fontconfig-infinality_20130104-0ubuntu0ppa1_all.deb 
+  933  sudo apt install gnome-screenshot
+ 1051  sudo apt install rcs
+ 1117  sudo apt install vimdiff
+ 1121  sudo apt install vim
+ 1125  sudo apt install ./vktablet-1.2.3-1-x86_64.deb 
+ 1130  sudo apt install dia
+ 1131  sudo apt install inkspot
+ 1136  sudo apt install inkscape
+ 1290  sudo apt install colortrans
+ 1291  sudo apt install colourtrans
+ 1292  sudo apt install colortrans
+ 1293  sudo apt install grc
+ 1306  sudo apt install ./cnrdrvcups-ufr2-uk_5.70-1.11_amd64.deb 
+ 1359  sudo apt install mupdf
+ 1469  sudo apt install polybar
+ 1491  sudo apt install fuse
+ 1510  sudo apt install udev
+ 1513  sudo apt install polkit
+ 1515  sudo apt install policykit-1
+ 1517  sudo apt install policykit-1
+ 1578  sudo apt install i3-gaps
+ 1579  sudo apt install i3gaps
+ 1584  sudo apt install welcome2l
+ 1590  sudo apt install ./sidekick-linux-release-x64-110.42.1.32068-b0bed2a.deb 
+ 1599  sudo apt install flatpak
+ 1602  sudo apt install gnome-software-plugin-flatpak 
+ 1622  sudo apt install aptitude
+ 1671  sudo apt install network-manager network-manager-openvpn network-manager-
+ 1673  sudo apt install network-manager network-manager-openvpn network-manager-openvpn-gnome 
+ 1687  sudo apt install ubuntu-desktop
+ 1692  sudo apt install ./openvpn_2.5.5-1ubuntu3_amd64.deb 
+ 1730  sudo apt install ./openvpn_2.5.5-1ubuntu3_amd64.deb 
+ 1733  sudo apt install network-manager-openvpn
+ 1763  history |grep 'apt install'
+ 1764  history |grep 'apt install' > $HOME/docker/ubuntu/projects/thegetup/host.lst
