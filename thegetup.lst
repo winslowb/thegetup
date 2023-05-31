@@ -45,6 +45,7 @@ source $HOME/.bashrc
 cd $HOME/projects
 git clone https://github.com/neovim/neovim.git
 cd $HOME/projects/neovim
+git checkoout origin/release-0.8
 make CMAKE_BUILD_TYPE=Release
 sudo make install
 cp $HOME/projects/neovim/build/bin/nvim $HOME/.local/bin
