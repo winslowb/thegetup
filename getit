@@ -1,0 +1,150 @@
+#!/bin/bash
+
+# Function to install packages
+install_packages() {
+  sudo apt autoremove -y 
+  sudo apt update
+  sudo apt install -y "$@"
+  sudo apt install tmux gpg gcc make gettext unzip cmake build-essential python3-neovim jq wget curl apt-file python3-dev python3-pip tzdata dconf-cli uuid-runtime inetutils-ping rclone pkg-config libtool -y
+}
+
+# Function to handle git operations
+git_operations() {
+  git config --global user.name "regular bill"
+  git config --global user.email "regularbill@bill.com"
+
+  # Check for access to the 'winslowb' GitHub repository
+  if gh repo view https://github.com/winslowb/dotfiles.git &>/dev/null; then
+    echo "You have access to the winslowb GitHub repository."
+  else
+    echo "You don't have access to the winslowb GitHub repository. Setting up authentication..."
+    gh auth login
+  fi
+}
+
+# Function to create directory if it doesn't exist
+create_directory() {
+  [ ! -d "$1" ] && mkdir -p "$1"
+}
+
+# Initial package updates and installs
+
+
+# GitHub CLI setup
+if ! type -p curl > /dev/null; then
+  install_packages curl
+fi
+
+{
+  curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
+  sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg
+  echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+  sudo apt update
+  install_packages gh
+} || {
+  echo "GitHub CLI setup failed."
+  exit 1
+}
+
+# Directory setup
+create_directory "$HOME/projects"
+create_directory "$HOME/.local/bin"
+
+cd $HOME || exit
+git_operations
+
+# Function to reload shell environment
+reload_shell() {
+  source ~/.bashrc || source ~/.zshrc || echo "Could not reload the shell environment."
+}
+
+# Node Version Manager setup
+{
+  if [ -z "$(command -v nvm)" ]; then
+    # Manually create the NVM directory
+    mkdir -p "$HOME/.nvm"
+
+    # Run the NVM install script
+    wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+
+    # Export NVM_DIR
+    export NVM_DIR="$HOME/.nvm"
+
+    # Source the NVM script manually
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+    # Install Node.js if NVM was sourced correctly
+    if [ -n "$(command -v nvm)" ]; then
+      if ! nvm ls | grep -q "18.14.2"; then
+        nvm install 18.14.2
+      else
+        echo "Node.js version 18.14.2 is already installed."
+      fi
+    else
+      echo "NVM setup failed."
+      exit 1
+    fi
+  else
+    echo "NVM is already installed."
+  fi
+} || {
+  echo "NVM setup failed."
+  exit 1
+}
+
+# More installations
+npm install -g @bitwarden/cli
+bw login
+
+create_directory "$HOME/.joplin-bin"
+NPM_CONFIG_PREFIX=~/.joplin-bin npm install -g joplin
+ln -s ~/.joplin-bin/bin/joplin "$HOME/.local/bin"
+
+# Continue from the last point...
+cd $HOME/projects || exit
+{
+  sh -c "$(curl -fsLS get.chezmoi.io)"
+  sudo cp $HOME/projects/bin/chezmoi /usr/bin/
+  alias dot=/usr/bin/chezmoi
+  export PATH=$PATH:$HOME/.local/bin
+  /usr/bin/chezmoi init https://github.com/winslowb/dotfiles.git
+  /usr/bin/chezmoi update -v
+} || {
+  echo "Chezmoi setup failed."
+  exit 1
+}
+
+source $HOME/.bashrc || echo "Could not source .bashrc"
+
+# Add 'cd $HOME' to bash profile
+echo 'cd $HOME' >> $HOME/.bash_profile
+source $HOME/.bashrc || echo "Could not source .bashrc"
+
+# Neovim Setup
+cd $HOME/projects || exit
+{
+  git clone https://github.com/neovim/neovim.git
+  cd $HOME/projects/neovim || exit
+  git checkout origin/release-0.8
+  make CMAKE_BUILD_TYPE=Release
+  sudo make install
+  cp $HOME/projects/neovim/build/bin/nvim $HOME/.local/bin
+} || {
+  echo "Neovim setup failed."
+  exit 1
+}
+
+# JIRA CLI Setup
+cd $HOME/projects || exit
+{
+  wget https://github.com/ankitpokhrel/jira-cli/releases/download/v1.3.0/jira_1.3.0_linux_arm64.tar.gz
+  tar -xzvf jira_1.3.0_linux_arm64.tar.gz
+} || {
+  echo "JIRA CLI setup failed."
+  exit 1
+}
+
+# Final Terminal Configurations
+export TERMINAL=tilix
+bash -c "$(wget -qO- https://git.io/vQgMr)" || echo "Final terminal configurations failed."
+
