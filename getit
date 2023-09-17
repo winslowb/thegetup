@@ -74,23 +74,8 @@ reload_shell() {
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
     # Install Node.js if NVM was sourced correctly
-    if [ -n "$(command -v nvm)" ]; then
-      if ! nvm ls | grep -q "18.14.2"; then
-        nvm install 18.14.2
-      else
-        echo "Node.js version 18.14.2 is already installed."
-      fi
-    else
-      echo "NVM setup failed."
-      exit 1
-    fi
-  else
-    echo "NVM is already installed."
-  fi
-} || {
-  echo "NVM setup failed."
-  exit 1
-}
+        nvm install 18.14.0
+      
 
 # More installations
 npm install -g @bitwarden/cli
@@ -147,4 +132,3 @@ cd $HOME/projects || exit
 # Final Terminal Configurations
 export TERMINAL=tilix
 bash -c "$(wget -qO- https://git.io/vQgMr)" || echo "Final terminal configurations failed."
-
