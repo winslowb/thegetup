@@ -24,13 +24,12 @@ gh auth login
 wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-nvm install 18.14.2
+nvm install --lts
+nvim use --lts
 
 npm install -g @bitwarden/cli
 bw login
 
-NPM_CONFIG_PREFIX=~/.joplin-bin npm install -g joplin
-ln -s ~/.joplin-bin/bin/joplin $HOME/.local/bin
 
 cd $HOME/projects
 sh -c "$(curl -fsLS get.chezmoi.io)"
