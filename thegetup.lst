@@ -2,7 +2,9 @@
 
 sudo apt autoremove -y 
 sudo apt update; sudo apt upgrade -y 
-sudo apt install tmux gpg gcc make gettext unzip cmake build-essential python3-neovim jq wget curl apt-file python3-dev python3-pip tzdata dconf-cli uuid-runtime inetutils-ping rclone pkg-config libtool locate git tmux gh libu2f-udev xsel docker.io locate python3.10-venv calendar ccal glow htop gcalcli fuse libnss3a libatk-bridge* libgtk-3-common libasound2 lxappearance net-tools nvidia-utils-535 nvidia-cuda-toolkit whois ripgrep ./fd_9.0.0_amd64.deb nmap dnsutils xmlstarlet ./session-manager-plugin.deb gawk fzf -y
+sudo apt install tmux gpg gcc make gettext unzip cmake build-essential python3-neovim jq wget curl apt-file python3-dev python3-pip tzdata dconf-cli uuid-runtime inetutils-ping rclone pkg-config libtool locate git tmux gh libu2f-udev xsel docker.io locate python3.10-venv calendar ccal htop gcalcli fuse libnss3 libatk-bridge* libgtk-3-common libasound2 lxappearance net-tools nvidia-utils-535 nvidia-cuda-toolkit whois ripgrep  nmap dnsutils xmlstarlet  gawk fzf -y gettext
+# ./fd_9.0.0_amd64.deb
+# ./session-manager-plugin.deb
 
 mkdir $HOME/.local/bin
 wget https://starship.rs/install.sh 
