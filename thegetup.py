@@ -5,7 +5,38 @@ def run_command(command):
     """Run a shell command."""
     subprocess.run(command, shell=True, check=True)
 
+def get_package_list(distro):
+    """Return the package list based on the distribution."""
+    if distro == "debian":
+        return [
+            "tmux", "gpg", "gcc", "make", "gettext", "unzip", "cmake", "build-essential",
+            "python3-neovim", "jq", "wget", "curl", "apt-file", "python3-dev", "python3-pip",
+            "tzdata", "dconf-cli", "uuid-runtime", "inetutils-ping", "rclone", "pkg-config",
+            "libtool", "locate", "git", "tmux", "gh", "libu2f-udev", "xsel", "docker.io",
+            "locate", "python3.10-venv", "calendar", "ccal", "htop", "gcalcli", "fuse",
+            "libnss3", "libatk-bridge*", "libgtk-3-common", "libasound2", "lxappearance",
+            "net-tools", "nvidia-utils-535", "nvidia-cuda-toolkit", "whois", "ripgrep",
+            "nmap", "dnsutils", "xmlstarlet", "gawk", "fzf", "gettext"
+        ]
+    elif distro == "ubuntu":
+        return [
+            "tmux", "gpg", "gcc", "make", "gettext", "unzip", "cmake", "build-essential",
+            "python3-neovim", "jq", "wget", "curl", "apt-file", "python3-dev", "python3-pip",
+            "tzdata", "dconf-cli", "uuid-runtime", "inetutils-ping", "rclone", "pkg-config",
+            "libtool", "locate", "git", "tmux", "gh", "libu2f-udev", "xsel", "docker.io",
+            "locate", "python3.10-venv", "calendar", "ccal", "htop", "gcalcli", "fuse",
+            "libnss3", "libatk-bridge2.0-0", "libgtk-3-0", "libasound2", "lxappearance",
+            "net-tools", "nvidia-utils-535", "nvidia-cuda-toolkit", "whois", "ripgrep",
+            "nmap", "dnsutils", "xmlstarlet", "gawk", "fzf", "gettext"
+        ]
+    else:
+        raise ValueError("Unsupported distribution")
+
 def main():
+    distro = input("Enter your Linux distribution (debian/ubuntu): ").strip().lower()
+    if distro not in ["debian", "ubuntu"]:
+        print("Invalid distribution. Please choose 'debian' or 'ubuntu'.")
+        return
     while True:
         print("\nSelect an option:")
         print("1. Update and upgrade system")
@@ -26,16 +57,7 @@ def main():
             run_command("sudo apt autoremove -y")
             run_command("sudo apt update && sudo apt upgrade -y")
         elif choice == '2':
-            packages = [
-                "tmux", "gpg", "gcc", "make", "gettext", "unzip", "cmake", "build-essential",
-                "python3-neovim", "jq", "wget", "curl", "apt-file", "python3-dev", "python3-pip",
-                "tzdata", "dconf-cli", "uuid-runtime", "inetutils-ping", "rclone", "pkg-config",
-                "libtool", "locate", "git", "tmux", "gh", "libu2f-udev", "xsel", "docker.io",
-                "locate", "python3.10-venv", "calendar", "ccal", "htop", "gcalcli", "fuse",
-                "libnss3", "libatk-bridge*", "libgtk-3-common", "libasound2", "lxappearance",
-                "net-tools", "nvidia-utils-535", "nvidia-cuda-toolkit", "whois", "ripgrep",
-                "nmap", "dnsutils", "xmlstarlet", "gawk", "fzf", "gettext"
-            ]
+            packages = get_package_list(distro)
             run_command(f"sudo apt install {' '.join(packages)} -y")
         elif choice == '3':
             os.makedirs(os.path.expanduser("~/.local/bin"), exist_ok=True)
