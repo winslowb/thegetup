@@ -73,9 +73,7 @@ def main():
         elif choice == '6':
             run_command("wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash")
             nvm_dir = os.path.expanduser("~/.nvm")
-            run_command(f"[ -s '{nvm_dir}/nvm.sh' ] && . '{nvm_dir}/nvm.sh'")
-            run_command("nvm install --lts")
-            run_command("nvm use --lts")
+            run_command(f"bash -c '[ -s \"{nvm_dir}/nvm.sh\" ] && . \"{nvm_dir}/nvm.sh\" && nvm install --lts && nvm use --lts'")
         elif choice == '7':
             run_command("npm install -g @bitwarden/cli")
             run_command("bw login")
