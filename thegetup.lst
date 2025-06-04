@@ -1,15 +1,10 @@
-
 #!/bin/bash
 
 set -euo pipefail
 
 REINSTALL=${REINSTALL:-false}
 INSTALL_LIST=(
-  tmux gpg gcc make gettext unzip cmake build-essential 
-  jq wget curl apt-file python3-dev python3-pip tzdata dconf-cli uuid-runtime
-  inetutils-ping rclone pkg-config libtool locate git tmux gh libu2f-udev xsel
-  locate python3-venv calendar ccal htop gcalcli fuse libnss3
-  libatk-bridge2.0-0 libgtk-3-common lxappearance net-tools whois ripgrep
+  tmux gpg gcc make gettext unzip cmake build-essential xclip jq wget curl apt-file python3-dev python3-pip tzdata dconf-cli uuid-runtime inetutils-ping rclone pkg-config libtool locate git tmux gh libu2f-udev xsel locate python3-venv calendar ccal htop gcalcli fuse libnss3 libatk-bridge2.0-0 libgtk-3-common lxappearance net-tools whois ripgrep
   nmap dnsutils xmlstarlet gawk fzf
 )
 
@@ -28,7 +23,7 @@ for pkg in "${INSTALL_LIST[@]}"; do
   if dpkg -s "$pkg" >/dev/null 2>&1 && [[ "$REINSTALL" == "false" ]]; then
     echo "✅ $pkg already installed"
   else
-    echo "➡️  Installing $pkg"
+    echo "➡️   Installing $pkg"
     sudo apt install -y "$pkg"
   fi
 done
@@ -47,35 +42,39 @@ echo "🔑 Checking GitHub CLI authentication..."
 if gh auth status 2>&1 | grep -q 'Logged in to github.com'; then
   echo "✅ Already authenticated with GitHub CLI"
 else
-  echo "➡️  Not authenticated. Running 'gh auth login'..."
+  echo "➡️   Not authenticated. Running 'gh auth login'..."
   gh auth login
 fi
 
-echo "⚙️  Setting up Git config..."
+echo "⚙️   Setting up Git config..."
 git config --global user.name "regular bill"
 git config --global user.email "regularbill@bill.com"
 
-# Install NVM only if not already installed
-if [ ! -d "$HOME/.nvm" ]; then
-  echo "➡️  Installing NVM..."
+# === NVM Setup ===
+export NVM_DIR="$HOME/.nvm"
+
+if [ ! -s "$NVM_DIR/nvm.sh" ]; then
+  echo "➡️    Installing NVM..."
   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
-else
-  echo "✅ NVM already installed"
 fi
 
-# Source NVM scripts properly
-export NVM_DIR="$HOME/.nvm"
+# Load NVM (after confirming install or if it already existed)
 # shellcheck source=/dev/null
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 # shellcheck source=/dev/null
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
-# Install Node LTS if not already installed
-if ! nvm ls --no-colors | grep -q 'lts/*'; then
-  echo "⬇️  Installing Node.js LTS version..."
-  nvm install --lts
+# === Check and install Node.js LTS ===
+if command -v nvm >/dev/null 2>&1; then 
+  if ! nvm ls --no-colors | grep -q 'lts/*'; then
+    echo "⬇️    Installing Node.js LTS version..."
+    nvm install --lts
+  else
+    echo "✅ Node.js LTS version already installed"
+  fi
 else
-  echo "✅ Node.js LTS version already installed"
+  echo "❌ NVM failed to install or load. Aborting."
+  exit 1
 fi
 
 echo "🔐 Installing Bitwarden CLI..."
@@ -95,7 +94,7 @@ chezmoi init https://github.com/winslowb/dotfiles.git
 chezmoi update -v
 
 # === Neovim via PPA ===
-echo "🛠️   Installing latest Neovim from unstable PPA..."
+echo "🛠️    Installing latest Neovim from unstable PPA..."
 sudo apt install -y software-properties-common
 sudo add-apt-repository --remove ppa:neovim-ppa/stable -y || true
 sudo add-apt-repository ppa:neovim-ppa/unstable -y
@@ -112,4 +111,5 @@ sudo apt install -y neovim python3-neovim
 #   mv jira "$JIRA_BIN"
 #   chmod +x "$JIRA_BIN"
 # fi
+
 
