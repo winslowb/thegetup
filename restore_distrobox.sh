@@ -73,7 +73,7 @@ export DISTROBOX_USE_DOCKER=true
 distrobox create \
     --name "$DISTROBOX_NAME" \
     --image ubuntu:24.04 \
-    --absolutely-disable-root-password-i-am-really-positively-sure
+    --absolutely-disable-root-password-i-am-really-positively-sure \
     --home "$TARGET_UBUNTU_HOME" || {
         echo "⚠️   Failed to create distrobox container"; exit 1;
     }
